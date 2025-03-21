@@ -4,75 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>조직적합도검사 예제</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 10px;
-            text-align: center;
-            font-size: 18px;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        td.question {
-            text-align: left;
-        }
-        td.identifier {
-            text-align: center;
-            width: 50px;
-        }
+     <style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: separate; /* 수정됨 */
+        border-spacing: 0; /* 수정됨 */
+        margin-top: 20px;
+        border-radius: 10px; /* 수정됨 */
+        overflow: hidden; /* 수정됨 */
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: center;
+        font-size: 18px;
+        width: 8%; /* 6개 열을 동일한 비율로 */
+    }
+    th {
+        background-color: #f4f4f4;
+    }
+    td.question {
+        text-align: left;
+        width: 30%;
+    }
+    td.identifier {
+        text-align: center;
+        width: 2%;
+    }
+    .big-dot {
+        font-size: 30px;
+    }
+    .refresh-button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+    .option-button {
+    display: block;
+    padding: 10px;
+    margin: 5px auto;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 16px;
+    width: 80%;
+    text-align: left;
+    border-radius: 10px; /* 🔽 추가: 둥근 버튼 */
+}
 
-th, td {
-            width: 8%; /* 6개 열(전혀 그렇지 않다 ~ 매우 그렇다)을 동일한 비율로 설정 */
-        }
-        td.identifier {
-            width: 2%; /* 문항 번호 열을 상대적으로 줄임 */
-        }
-        td.question {
-            width: 30%; /* 질문이 들어가는 열을 상대적으로 넓게 설정 */
-        }
-        .big-dot {
-            font-size: 30px;
-        }
-        .refresh-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        .option-button {
-            display: block;
-            padding: 10px;
-            margin: 5px auto;
-            background-color: #f4f4f4;
-            border: 1px solid #ccc;
-            cursor: pointer;
-            font-size: 16px;
-            width: 80%;
-            text-align: left;
-        }
-        .option-button.selected {
-            background-color: black;
-            color: white;
-        }
-	td:nth-child(7), td:nth-child(8) {
-    	background-color: #f4f4f4;
-	}
-    </style>
+.option-button.selected {
+    background-color: black;
+    color: white;
+    /* border-radius: 10px; ← 넣어도 무방함 */
+}
+
+    td:nth-child(7), td:nth-child(8) {
+        background-color: #f4f4f4;
+    }
+
+    /* 🔽 둥근 모서리 효과 - 첫/마지막 행의 셀에 개별 적용 */
+    table tr:first-child th:first-child {
+        border-top-left-radius: 10px;
+    }
+    table tr:first-child th:last-child {
+        border-top-right-radius: 10px;
+    }
+    table tr:last-child td:first-child {
+        border-bottom-left-radius: 10px;
+    }
+    table tr:last-child td:last-child {
+        border-bottom-right-radius: 10px;
+    }
+</style>
+
 </head>
 <body>
     <h2>조직적합도 검사 문항예제</h2>
