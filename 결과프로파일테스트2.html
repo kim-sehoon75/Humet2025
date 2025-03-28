@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전남대학교병원 필기전형 결과 안내</title>
+    <style>
+        @media print {
+            button { display: none; }
+        }
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            color: #333;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .a4-container {
+            width: 210mm;
+            min-height: 290mm;
+            padding: 20mm;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            position: relative;
+        }
+        .header {
+            color: #29ABE2;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .separator {
+            width: 100%;
+            height: 4px;
+            background-color: #29ABE2;
+            margin-bottom: 20px;
+        }
+        .content {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .content strong {
+            font-weight: bold;
+        }
+        .result-table {
+            margin-top: 30px;
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 16px;
+        }
+        .result-table th {
+            background-color: #f5f5f5;
+            border-bottom: 2px solid #29ABE2;
+            padding: 10px;
+        }
+        .result-table td {
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .highlight {
+            color: #29ABE2;
+            font-weight: bold;
+        }
+        .pdf-button {
+            position: absolute;
+            bottom: 10mm;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #29ABE2;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="a4-container" id="pdfContent">
+
+        <div class="header">2025년 전남대학교병원 직원(간호직) 필기전형 결과 안내드립니다.</div>
+        <div class="separator"></div>
+
+        <div class="content">
+            <p><strong>안녕하십니까, 전남대학교병원입니다.</strong></p>
+            <p>전남대학교병원 2025년 직원(간호직) 필기전형 결과를 안내해 드립니다.</p>
+            <p><span class="highlight">가나다님</span>을 뵐 날을 설레는 마음으로 기다리고 있겠습니다.</p>
+
+            <table class="result-table">
+                <tr>
+                    <th>항목</th>
+                    <th>점수</th>
+                </tr>
+                <tr>
+                    <td>전공 점수</td>
+                    <td class="highlight">76.25</td>
+                </tr>
+                <tr>
+                    <td>영어 점수</td>
+                    <td class="highlight">76</td>
+                </tr>
+                <tr>
+                    <td>필기전형 점수</td>
+                    <td class="highlight">76.175</td>
+                </tr>
+                <tr>
+                    <td>필기전형 합격선</td>
+                    <td class="highlight">69.5</td>
+                </tr>
+                <tr>
+                    <td>결과</td>
+                    <td class="highlight">합격</td>
+                </tr>
+            </table>
+
+            <div style="width:100%; margin-top:50px;">
+                <canvas id="resultChart"></canvas>
+            </div>
+
+            <p>*본 메일은 발신 전용입니다.</p>
+
+        </div>
+
+        <button class="pdf-button" onclick="downloadPDF()">PDF 다운로드</button>
+
+    </div>
+
+    <script>
+        const ctx = document.getElementById('resultChart').getContext('2d');
+        const resultChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['전공 점수', '영어 점수', '필기전형 점수', '필기전형 합격선'],
+                datasets: [{
+                    label: '점수',
+                    data: [76.25, 76, 76.175, 69.5],
+                    backgroundColor: ['#29ABE2','#29ABE2','#29ABE2','#ffbf00'],
+                    borderWidth: 1
+                }]
+            },
+            options: {scales: {y: {beginAtZero: true, suggestedMax: 100}}}
+        });
+
+        function downloadPDF() {
+            const element = document.getElementById('pdfContent');
+            const opt = { margin: 1, filename: '결과안내.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+
+</body>
+</html>
