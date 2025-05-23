@@ -1,2 +1,314 @@
-# Humet2025
-Humet 페이지 테스트
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인재상 및 조직적합도검사 안내</title>
+     <style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: separate; /* 수정됨 */
+        border-spacing: 0; /* 수정됨 */
+        margin-top: 20px;
+        border-radius: 10px; /* 수정됨 */
+        overflow: hidden; /* 수정됨 */
+    }
+    th, td {
+        border: 0.6px solid #b7b7b7;
+        padding: 10px;
+        text-align: center;
+        font-size: 18px;
+        width: 8%; /* 6개 열을 동일한 비율로 */
+    }
+    th {
+        background-color: #224867;
+	color: white;
+    }
+    td.question {
+        text-align: left;
+        width: 30%;
+    }
+    td.identifier {
+        text-align: center;
+        width: 2%;
+    }
+    .big-dot {
+        font-size: 30px;
+    }
+    .refresh-button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+    .option-button {
+    display: block;
+    padding: 10px;
+    margin: 5px auto;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 16px;
+    width: 80%;
+    text-align: left;
+    border-radius: 10px; /* 🔽 추가: 둥근 버튼 */
+}
+
+.option-button.selected {
+    background-color:  #224867;
+    color: white;
+    /* border-radius: 10px; ← 넣어도 무방함 */
+}
+
+    td:nth-child(7), td:nth-child(8) {
+        background-color: #f4f4f4;
+    }
+
+    /* 🔽 둥근 모서리 효과 - 첫/마지막 행의 셀에 개별 적용 */
+    table tr:first-child th:first-child {
+        border-top-left-radius: 10px;
+    }
+    table tr:first-child th:last-child {
+        border-top-right-radius: 10px;
+    }
+    table tr:last-child td:first-child {
+        border-bottom-left-radius: 10px;
+    }
+    table tr:last-child td:last-child {
+        border-bottom-right-radius: 10px;
+    }
+</style>
+
+</head>
+<body>
+<h1>한국수력원자력(주) 인재상 및 조직적합도 검사 안내</h2>
+<div style="background-color: #f5f5f5; border-radius: 20px; padding: 20px; margin-top: 20px; font-size: 18px; line-height: 1.2; text-align: left; border: 1px solid #ddd;">
+  <p>안녕하세요. 한국수력원자력 인재상 및 조직적합도 검사의 응답방식이 변경되었음을 알려드립니다.</p>
+  <p>하단의 페이지에서 검사 응답 방식을 테스트하실 수 있습니다. 각각의 문항을 선택한 다음, OMR 답안마킹 예시를 확인해 주시기를 바랍니다.</P>
+  <p>응답방식을 충분히 숙지하여, 본 검사에 임해주시기 바랍니다.</p>
+</div>
+<h2>검사 응답 방식 테스트</h2>
+<br>본 검사는 4개 진술문을 하나의 세트로 하여 총 63개 세트로 구성되어 있습니다.</br>
+<br>하나의 세트는 다음과 같은 형태로 제시되며, 응답은 부여 받은 답안지에 정확히 마킹해야 합니다.</br>
+<br><u>(실제 문제지에는 응답표기를 하지 않아도 무방합니다.)</u></br>
+<br> 각 문항의 응답을 완료하고 나면 OMR 답안지에 어떻게 기입해야 하는지 예시를 확인하실 수 있습니다.</br> 
+    <form id="survey-form" onsubmit="return false;">
+        <h3>📌 1. ⓐ, ⓑ, ⓒ, ⓓ 각 진술문을 읽고 본인이 동의하는 정도를 4점 척도(1=전혀그렇지 않다, 2=그렇지 않다, 3=그렇다, 4=매우 그렇다)로 <br>마킹(선택)해 주시기 바랍니다.</h3>
+        <table>
+            <tr>
+                <th colspan="2">Item Set</th>
+                <th>전혀 <br>그렇지 않다</th>
+                <th>그렇지<br> 않다</th>
+                <th>그렇다</th>
+                <th>매우<br> 그렇다</th>
+		<th>M</th>
+		<th>L</th>
+            </tr>
+            <tbody id="survey-questions"></tbody>
+        </table>
+    </form>
+    
+    <h3>📌 2. ⓐ, ⓑ, ⓒ, ⓓ 4개의 진술문 중 자신의 모습과 가장 가깝다고 생각되는 것과(Most), 그렇지 않은(Least) 문항을 각각 선택해 주세요.</h3>
+    <div>
+        <p><strong>(M) 칸에는 ⓐ, ⓑ, ⓒ, ⓓ 4개의 진술문 중 상대적으로 자신의 모습과 가장 비슷하다고 생각되는 1개의 진술문을 선택해주세요.</strong></p>
+	<div id="closest-options"></div>
+    </div>
+    <div>
+        <p><strong>(L)칸에는 ⓐ, ⓑ, ⓒ, ⓓ 4개의 진술문 중 상대적으로 자신의 모습과 가장 다르다고 생각되는 1개의 진술문을 선택해 주세요. </strong></p>
+        <div id="farthest-options"></div>
+    </div>
+ 
+    <h3>📌 3. OMR 답안 마킹 예시</h3>
+   <br>아래의 결과는 지원자님이 응답한 내용을 바탕으로 한 OMR 답안마킹 예시입니다.</br>
+   <br>참고하여 실제 검사를 진행할 때에는 답안지에 아래와 같은 방식으로 마킹해주시기 바랍니다.</br>	
+   <br><span style="color: red; font-weight: bold;">(M)칸과 (L)칸에는 동일한 값이 들어갈 수 없습니다.</span></br>
+    <table>
+        <tr>
+            <th colspan="2">Item Set</th>
+            <th>전혀<br>그렇지않다</th>
+	    <th>그렇지<br>않다</th>
+	    <th>그렇다</th>
+	    <th>매우<br>그렇다</th>
+            <th>M</th>
+            <th>L</th>
+        </tr>
+        <tbody id="omr-results"></tbody>
+    </table>
+    
+
+
+    <button class="refresh-button" onclick="location.reload()">다시 응답하기(새로고침)</button>
+    
+    <script>
+        const questions = {
+            q1: "나는 주변사람들로부터 성실하다는 평가를 받는다.",
+            q2: "나는 모임에서 대화를 먼저 시작하는 편이다.",
+            q3: "나는 규칙을 잘 지키는 편이다.",
+            q4: "나는 새로운 사람을 만나는 것을 좋아한다."
+        };
+        let closestSelection = "";
+        let farthestSelection = "";
+        
+        function loadSurveyQuestions() {
+            const surveyBody = document.getElementById("survey-questions");
+            surveyBody.innerHTML = "";
+            let labels = ["ⓐ", "ⓑ", "ⓒ", "ⓓ"];
+            let index = 0;
+            for (const key in questions) {
+                let row = `<tr><td class='identifier'>${labels[index]}</td><td class='question'>${questions[key]}</td>`;
+                for (let i = 1; i <= 4; i++) {
+                    row += `<td><input type='radio' name='${key}' value='${i}' onchange='updateOMR()'></td>`;
+                }
+		row += `<td>${["ⓐ", "ⓑ", "ⓒ", "ⓓ"][index]}</td>`;
+    		row += `<td>${["ⓐ", "ⓑ", "ⓒ", "ⓓ"][index]}</td>`;
+                row += "</tr>";
+                surveyBody.innerHTML += row;
+                index++;
+            }
+            renderOptions("closest-options");
+        }
+        
+ 	function renderOptions(divId, exclude = null) {
+    	const div = document.getElementById(divId);
+    	div.innerHTML = "";
+    	let labels = ["ⓐ", "ⓑ", "ⓒ", "ⓓ"]; 
+    	let keys = Object.keys(questions); // 원래 순서 유지
+
+    	for (let i = 0; i < keys.length; i++) {
+        let key = keys[i];
+        if (key !== exclude) {
+            const btn = document.createElement("button");
+            btn.textContent = `${labels[i]} ${questions[key]}`; // 고정된 라벨 유지
+            btn.className = "option-button";
+            btn.dataset.key = key;
+            btn.onclick = function () {
+                selectOption(divId, key, btn);
+            };
+            div.appendChild(btn);
+	        }
+	    }
+	}
+    function selectOption(divId, key, button) {
+    let isDeselected = false;
+    
+    // 기존 선택 해제 로직 추가
+    if (divId === "closest-options") {
+        if (closestSelection === key) {
+            closestSelection = "";
+            isDeselected = true;
+        } else {
+            closestSelection = key;
+        }
+    } else if (divId === "farthest-options") {
+        if (farthestSelection === key) {
+            farthestSelection = "";
+            isDeselected = true;
+        } else {
+            farthestSelection = key;
+        }
+    }
+
+    // 같은 행에서 M과 L이 중복 선택된 경우 L을 자동 해제
+    if (closestSelection === farthestSelection) {
+        farthestSelection = "";
+    }
+
+    // 버튼 스타일 초기화
+    document.querySelectorAll(`#${divId} .option-button`).forEach(btn => {
+        btn.classList.remove("selected");
+    });
+
+    // 선택이 해제되지 않은 경우에만 버튼을 강조
+    if (!isDeselected) {
+        button.classList.add("selected");
+    }
+
+    updateOMR();
+}
+       
+function updateOMR() {
+    const omrResults = document.getElementById("omr-results");
+    omrResults.innerHTML = "";
+    let labels = ["ⓐ", "ⓑ", "ⓒ", "ⓓ"];
+    let numberMap = ["①", "②", "③", "④"];
+    let index = 0;
+
+    for (const key in questions) {
+        let selected = document.querySelector(`input[name='${key}']:checked`);
+        let selectedValue = selected ? parseInt(selected.value) : "";
+
+        let row = `<tr><td class='identifier'>${labels[index]}</td><td class='question'>${questions[key]}</td>`;
+
+        for (let i = 1; i <= 4; i++) {
+            row += selectedValue == i ? `<td><span class='big-dot'>●</span></td>` : `<td>${numberMap[i - 1]}</td>`;
+        }
+
+        // M과 L의 마킹 해제 로직 추가
+        let mMarking = (closestSelection === key) ? "<span class='big-dot'>●</span>" : labels[index];
+        let lMarking = (farthestSelection === key) ? "<span class='big-dot'>●</span>" : labels[index];
+
+        // M과 L이 같은 행에서 선택되었을 경우 자동 해제
+        if (closestSelection === key && farthestSelection === key) {
+            mMarking = labels[index];
+            lMarking = labels[index];
+            closestSelection = "";
+            farthestSelection = "";
+            
+            // 선택한 버튼 스타일도 초기화
+            document.querySelectorAll(".option-button").forEach(btn => {
+                btn.classList.remove("selected");
+            });
+        }
+
+        row += `<td>${mMarking}</td>`;
+        row += `<td>${lMarking}</td>`;
+
+        row += `</tr>`;
+        omrResults.innerHTML += row;
+        index++;
+    }
+}
+
+        
+
+function selectOption(divId, key, button) {
+    document.querySelectorAll(`#${divId} .option-button`).forEach(btn => {
+        btn.classList.remove("selected");
+    });
+
+    // 선택을 해제할 경우 (이미 선택된 버튼을 다시 클릭하면 선택 해제)
+    if (divId === "closest-options" && closestSelection === key) {
+        closestSelection = "";
+    } else if (divId === "farthest-options" && farthestSelection === key) {
+        farthestSelection = "";
+    } else {
+        button.classList.add("selected");
+
+        if (divId === "closest-options") {
+            closestSelection = key;
+            renderOptions("farthest-options", key);
+        } else {
+            farthestSelection = key;
+        }
+    }
+
+    updateOMR();
+}
+
+
+        
+        window.onload = function () {
+            loadSurveyQuestions();
+        };
+    </script>
+</body>
+</html>
